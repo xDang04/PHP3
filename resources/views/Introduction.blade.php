@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <table>
+    <table border="1">
         <tr>
             <td>FullName</td>
             <td>Birthday</td>

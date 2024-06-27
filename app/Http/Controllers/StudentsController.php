@@ -11,10 +11,10 @@ class StudentsController extends Controller
     {
         $data = [
             [
-                'FullName' => 'HoXuanDang',
-                'Birthday' => '01-05-3004',
+                'FullName' => 'Hồ Xuân Đăng',
+                'Birthday' => '01-05-2004',
                 'Gender' => 'Male',
-                'Address' => 'ThanhHoa',
+                'Address' => 'Thanh Hóa',
                 'Phone' => '0967365963',
                 'Email' => 'hodang204@gmail.com',
             ]
