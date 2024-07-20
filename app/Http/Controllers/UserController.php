@@ -15,7 +15,7 @@ class UserController extends Controller
             ->select('users.name', 'users.email', 'phongban.ten_donvi', 'users.id', 'phongban.id as idPhongBan', 'users.tuoi')
             ->get();
 
-        return view('users/list-user')->with([
+        return view('users.list-user')->with([
             'listUsers' => $data
         ]);
     }
@@ -25,7 +25,7 @@ class UserController extends Controller
             ->select('id', 'ten_donvi')
             ->get();
 
-        return view('users/add-user')
+        return view('users.add-user')
             ->with([
                 'phongBan' => $phongBan
             ]);
@@ -60,7 +60,7 @@ class UserController extends Controller
             ->get();
         $user = DB::table('users')->where('id', $idUser)
             ->first();
-        return view('users/update-user')
+        return view('users.update-user')
             ->with([
                 'user' => $user,
                 'phongBan' => $phongBan

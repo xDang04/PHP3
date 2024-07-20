@@ -104,3 +104,8 @@ Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
     Route::get('searchProduct', [ProductController::class, 'searchProduct'])
         ->name('searchProduct');
 });
+
+
+Route::get('test', function(){
+    return view('admin.products.listProduct');
+});
