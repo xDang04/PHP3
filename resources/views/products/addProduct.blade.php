@@ -12,8 +12,10 @@
     <form action="{{ route('products.addPostProduct') }}" method="POST">
         @csrf
         Name : <input type="text" name="name"><br>
-        Price : <input type="text" name="price"><br>
-        View : <input type="text" name="view"><br>
+        Price : <input type="text" name="price" min="1000"><br>
+        View : <input type="text" name="view" min="0
+        
+        "><br>
         Category :
         <select name="category" id="">
             @foreach($category as $value)

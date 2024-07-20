@@ -136,6 +136,7 @@ class ProductController extends Controller
     public function listProducts()
     {
         // http://127.0.0.1:8000/products/listProducts
+           
         $data = DB::table('product')
             ->orderBy('view', 'desc')
             ->join('category', 'product.category_id', '=', 'category.id')
@@ -149,11 +150,29 @@ class ProductController extends Controller
             )
             ->get();
 
-        return view('products/listProduct')->with([
+        return view('products.listProduct')->with([
             'listProducts' => $data
         ]);
     }
+    public function searchProduct(Request $request)
+    {
+         // Lấy từ khóa tìm kiếm từ request
+         $search = $request->input('search');
+        $listProducts = DB::table('product')
+            ->join('category', 'product.category_id', '=', 'category.id')
+            ->select(
+                'product.name',
+                'product.price',
+                'product.view',
+                'product.id',
+                'category.id as idCategory',
+                'category.name as category_name'
+            )
+            ->where('product.name', 'like', '%' . $search . '%')
+            ->get();
 
+        return view('products.listProduct', compact('listProducts', 'search'));
+    }
     public function addProduct()
     // http://127.0.0.1:8000/products/addProduct
     {
@@ -161,7 +180,7 @@ class ProductController extends Controller
             ->select('id', 'name')
             ->get();
 
-        return view('products/addProduct')
+        return view('products.addProduct')
             ->with([
                 'category' => $category
             ]);
@@ -182,12 +201,18 @@ class ProductController extends Controller
         return redirect()->route('products.listProducts');
     }
 
+
+
     public function deleteProduct($idProduct)
     {
-        DB::table('product')->where('id', $idProduct)->delete();
-
+        DB::table('product')
+        ->where('id', $idProduct)
+        ->delete();
         return redirect()->route('products.listProducts');
     }
+
+
+
     public function editProduct($idProduct)
     {
         $category = DB::table('category')
@@ -195,7 +220,7 @@ class ProductController extends Controller
             ->get();
         $product = DB::table('product')->where('id', $idProduct)
             ->first();
-        return view('products/updateProduct')
+        return view('products.updateProduct')
             ->with([
                 'product' => $product,
                 'category' => $category
@@ -218,39 +243,5 @@ class ProductController extends Controller
 
         return redirect()->route('products.listProducts');
     }
-    public function searchProduct(Request $request)
-    {
-        $searchTerm = $request->input('search'); // Lấy từ khóa tìm kiếm từ request
-
-        $listProducts = DB::table('product')
-            ->join('category', 'product.category_id', '=', 'category.id')
-            ->select(
-                'product.name',
-                'product.price',
-                'product.view',
-                'product.id',
-                'category.id as idCategory',
-                'category.name as category_name'
-            )
-            ->where('product.name', 'like', '%' . $searchTerm . '%')
-            ->get();
-
-        return view('products.listProduct', compact('listProducts', 'searchTerm'));
-    }
-    // $data = DB::table('product')
-    //         ->orderBy('view', 'desc')
-    //         ->join('category', 'product.category_id', '=', 'category.id')
-    //         ->select(
-    //             'product.name',
-    //             'product.price',
-    //             'product.view',
-    //             'product.id',
-    //             'category.id as idCategory',
-    //             'category.name as category_name'
-    //         )
-    //         ->get();
-
-    //     return view('products/listProduct')->with([
-    //         'listProducts' => $data
-    //     ]);
+    
 }
