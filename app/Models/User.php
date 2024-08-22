@@ -43,4 +43,12 @@ class User extends Authenticatable
     //     'password' => 'hashed',
     // ];
     protected $table = 'users';
+    protected $primaryKey = 'user_id';
+    protected $fillable = [
+        'name',
+        'email', 
+        'password',
+        'address',
+        'phone'
+    ];
 }

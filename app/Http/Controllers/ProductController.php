@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -133,115 +135,118 @@ class ProductController extends Controller
 
 
 
-    public function listProducts()
-    {
-        // http://127.0.0.1:8000/products/listProducts
+    // public function listProducts()
+    // {
+    //     // http://127.0.0.1:8000/products/listProducts
            
-        $data = DB::table('product')
-            ->orderBy('view', 'desc')
-            ->join('category', 'product.category_id', '=', 'category.id')
-            ->select(
-                'product.name',
-                'product.price',
-                'product.view',
-                'product.id',
-                'category.id as idCategory',
-                'category.name as category_name'
-            )
-            ->get();
+    //     $data = DB::table('product')
+    //         ->orderBy('view', 'desc')
+    //         ->join('category', 'product.category_id', '=', 'category.id')
+    //         ->select(
+    //             'product.name',
+    //             'product.price',
+    //             'product.view',
+    //             'product.id',
+    //             'category.id as idCategory',
+    //             'category.name as category_name'
+    //         )
+    //         ->get();
 
-        return view('products.listProduct')->with([
-            'listProducts' => $data
-        ]);
-    }
-    public function searchProduct(Request $request)
-    {
-         // Lấy từ khóa tìm kiếm từ request
-         $search = $request->input('search');
-        $listProducts = DB::table('product')
-            ->join('category', 'product.category_id', '=', 'category.id')
-            ->select(
-                'product.name',
-                'product.price',
-                'product.view',
-                'product.id',
-                'category.id as idCategory',
-                'category.name as category_name'
-            )
-            ->where('product.name', 'like', '%' . $search . '%')
-            ->get();
+    //     return view('products.listProduct')->with([
+    //         'listProducts' => $data
+    //     ]);
+    // }
+    // public function searchProduct(Request $request)
+    // {
+    //      // Lấy từ khóa tìm kiếm từ request
+    //      $search = $request->input('search');
+    //     $listProducts = DB::table('product')
+    //         ->join('category', 'product.category_id', '=', 'category.id')
+    //         ->select(
+    //             'product.name',
+    //             'product.price',
+    //             'product.view',
+    //             'product.id',
+    //             'category.id as idCategory',
+    //             'category.name as category_name'
+    //         )
+    //         ->where('product.name', 'like', '%' . $search . '%')
+    //         ->get();
 
-        return view('products.listProduct', compact('listProducts', 'search'));
-    }
-    public function addProduct()
-    // http://127.0.0.1:8000/products/addProduct
-    {
-        $category = DB::table('category')
-            ->select('id', 'name')
-            ->get();
+    //     return view('products.listProduct', compact('listProducts', 'search'));
+    // }
+    // public function addProduct()
+    // // http://127.0.0.1:8000/products/addProduct
+    // {
+    //     $category = DB::table('category')
+    //         ->select('id', 'name')
+    //         ->get();
 
-        return view('products.addProduct')
-            ->with([
-                'category' => $category
-            ]);
-    }
+    //     return view('products.addProduct')
+    //         ->with([
+    //             'category' => $category
+    //         ]);
+    // }
 
-    public function addPostproduct(Request $req)
-    {
-        $data = [
-            'name' => $req->name,
-            'price' => $req->price,
-            'view' => $req->view,
-            'category_id' => $req->category,
-            'creat_at' => Carbon::now(),
-            'update_at' => Carbon::now(),
-        ];
-        DB::table('product')->insert($data);
+    // public function addPostproduct(Request $req)
+    // {
+    //     $data = [
+    //         'name' => $req->name,
+    //         'price' => $req->price,
+    //         'view' => $req->view,
+    //         'category_id' => $req->category,
+    //         'creat_at' => Carbon::now(),
+    //         'update_at' => Carbon::now(),
+    //     ];
+    //     DB::table('product')->insert($data);
 
-        return redirect()->route('products.listProducts');
-    }
-
-
-
-    public function deleteProduct($idProduct)
-    {
-        DB::table('product')
-        ->where('id', $idProduct)
-        ->delete();
-        return redirect()->route('products.listProducts');
-    }
+    //     return redirect()->route('products.listProducts');
+    // }
 
 
 
-    public function editProduct($idProduct)
-    {
-        $category = DB::table('category')
-            ->select('id', 'name')
-            ->get();
-        $product = DB::table('product')->where('id', $idProduct)
-            ->first();
-        return view('products.updateProduct')
-            ->with([
-                'product' => $product,
-                'category' => $category
-            ]);
-    }
-    public function updateProduct(Request $request)
-    // http://127.0.0.1:8000/products/editProduct/3
-    {
-        $data = [
-            'name' => $request->name,
-            'price' => $request->price,
-            'category_id' => $request->category,
-            'view' => $request->view,
-            // 'creat_at' => Carbon::now(),
-            'update_at' => Carbon::now(),
+    // public function deleteProduct($idProduct)
+    // {
+    //     DB::table('product')
+    //     ->where('id', $idProduct)
+    //     ->delete();
+    //     return redirect()->route('products.listProducts');
+    // }
 
-        ];
-        DB::table('product')->where('id', $request->idProduct)
-            ->update($data);
 
-        return redirect()->route('products.listProducts');
-    }
+
+    // public function editProduct($idProduct)
+    // {
+    //     $category = DB::table('category')
+    //         ->select('id', 'name')
+    //         ->get();
+    //     $product = DB::table('product')->where('id', $idProduct)
+    //         ->first();
+    //     return view('products.updateProduct')
+    //         ->with([
+    //             'product' => $product,
+    //             'category' => $category
+    //         ]);
+    // }
     
+    // http://127.0.0.1:8000/products/editProduct/3
+    // public function updateProduct(Request $request)
+    // {
+    //     $data = [
+    //         'name' => $request->name,
+    //         'price' => $request->price,
+    //         'category_id' => $request->category,
+    //         'view' => $request->view,
+    //         // 'creat_at' => Carbon::now(),
+    //         'update_at' => Carbon::now(),
+
+    //     ];
+    //     DB::table('product')->where('id', $request->idProduct)
+    //         ->update($data);
+
+    //     return redirect()->route('products.listProducts');
+    // }
+    
+
+        
 }
