@@ -9,19 +9,20 @@
 </head>
 
 <body>
-    <form action="{{ route('products.addPostProduct') }}" method="POST">
+    <form action="{{ route('admin.product.addPostProduct')}}" method="POST" enctype="multipart/form-data">
         @csrf
         Name : <input type="text" name="name"><br>
         Price : <input type="text" name="price" min="1000"><br>
-        View : <input type="text" name="view" min="0
         
-        "><br>
-        Category :
+        image : <input type="file" name="image" accept="image/">
+        
+        {{-- "><br> --}}
+        {{-- Category :
         <select name="category" id="">
             @foreach($category as $value)
             <option value="{{ $value -> id }}">{{ $value -> name}}</option>
             @endforeach
-        </select><br>
+        </select><br> --}}
         <button type="submit">Add</button>
 
     </form>
